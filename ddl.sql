@@ -1037,7 +1037,7 @@ create table public.district -- Ushbu jadvalda tumanlar haqida ma'lumotlar saqla
     soato                 bigint -- Tumanning Ma'muriy-hududiy tuzilmalarni belgilash tizimi (soato) kodi
 );
 
-create table public.organization  -- Ushbu jadvalda tashkilotlar haqida ma'lumotlar saqlanadi, davlat tashkilotlari(korxona, zavod) va xususiy tashkilotlar(vakolatli omborlari bor)
+create table public.organization  -- Ushbu jadvalda tashkilotlar haqida ma'lumotlar saqlanadi, davlat tashkilotlari(korxona, zavod) va xususiy tashkilotlar(vakolatli omborlari bor). (Tashkilotlardagi shtatlar soni haqida ma'lumot olish uchun har doim inn ustuni bilan tekshirish kerak)
 (
     id                       bigint       not null -- id raqam (primary key)
         primary key, 
