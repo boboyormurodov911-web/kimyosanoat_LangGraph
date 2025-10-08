@@ -16,5 +16,5 @@ COPY . .
 # 8000-portni ochib qo‘yish
 EXPOSE 8000
 
-# Uvicorn orqali main.py ishga tushirish
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+# Avval create_table.py bajariladi, keyin uvicorn ishga tushadi
+CMD ["sh", "-c", "python create_table.py && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"]
