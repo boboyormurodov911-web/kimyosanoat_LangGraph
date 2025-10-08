@@ -3,10 +3,10 @@ import psycopg2.extras
 import os
 
 
-DB_HOST = os.getenv("DB_HOST", "192.168.1.7")
-DB_NAME = os.getenv("DB_NAME", "aidb2")
-DB_USER = os.getenv("DB_USER", "ai-user")
-DB_PASS = os.getenv("DB_PASS", "63D9WFhW4S4GQOXaPkyj")
+DB_HOST = os.getenv("DB_HOST", "192.168.1.24")
+DB_NAME = os.getenv("DB_NAME", "kimyosanoataidb")
+DB_USER = os.getenv("DB_USER", "kimyosanoatai-user")
+DB_PASS = os.getenv("DB_PASS", "39uWfFEy4qt9orC0MuuJ")
 
 def get_connection():
     return psycopg2.connect(
