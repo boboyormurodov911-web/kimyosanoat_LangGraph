@@ -3,10 +3,10 @@ import psycopg2
 
 
 conn = psycopg2.connect(
-    dbname="aidb2",
-    user="ai-user",
-    password="63D9WFhW4S4GQOXaPkyj",
-    host="192.168.1.7",
+    dbname="kimyosanoataidb",
+    user="kimyosanoatai-user",
+    password="39uWfFEy4qt9orC0MuuJ",
+    host="192.168.1.24",
     port=5432,
 )
 
@@ -34,7 +34,6 @@ def create_tables():
     id SERIAL PRIMARY KEY,
     session_id VARCHAR(255) NOT NULL,
     user_question TEXT NOT NULL,
-    assistant_answer TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
 );""")
 
