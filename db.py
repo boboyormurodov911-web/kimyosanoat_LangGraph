@@ -22,7 +22,7 @@ def save_chat_to_db(session_id: str, question: str, answer: str):
     conn = get_connection()
     with conn.cursor() as cur:
         cur.execute("""
-            INSERT INTO chat_history (session_id, user_question, assistant_answer)
+            INSERT INTO chat_history1 (session_id, user_question, assistant_answer)
             VALUES (%s, %s, %s)
         """, (session_id, question, answer))
     conn.commit()
@@ -33,7 +33,7 @@ def get_last_chats(session_id: str, limit: int = 10):
     with conn.cursor() as cur:
         cur.execute("""
             SELECT user_question, assistant_answer
-            FROM chat_history
+            FROM chat_history1
             WHERE session_id = %s
             ORDER BY created_at DESC
             LIMIT %s
