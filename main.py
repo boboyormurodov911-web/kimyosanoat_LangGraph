@@ -109,12 +109,38 @@ def is_db_question(state: State):
 def generate_sql(state: State):
     chat_context = get_last_chats(state["session_id"])
     prompt = f"""
+    Sen dunyodagi eng kuchli SQL agentisan. Seni asosiy vazifang - ma'lumotlar bazasi sxemasiga asoslanib, eng aniq SQL so‘rovini yaratish va savolga to‘g‘ri javob berishdir.
     {chat_context}
 
     Foydalanuvchi savoli: {state['question']}
-    Ma’lumotlar bazasi sxemasi (DDL/schema): {METADATA_SCHEMA}
+    Barcha tushuntirishlar faqat berilgan ddl faylida yozilgan. Ma’lumotlar bazasi sxemasi (DDL/schema): {METADATA_SCHEMA}
 
-    Faqatgina SQL so‘rovini yozing (PostgreSQL sintaksisida).
+    Qattiq talablar (buzilmasligi shart):
+    - Har bir javob faqat "ddl" bazasidan olingan natijalarga asoslanishi kerak. Agar "ddl" natijalari noto‘g‘ri bo‘lsa yoki javob topilmasa, savolni diqqat bilan tahlil qiling va jarayonni takrorlang.
+    - Agar hali ham yetarli ma’lumot bo‘lmasa, savolning tushunilmagan qismini aniqlashtirishni so‘rang.
+    - Natijada katta sonlarni o‘qish uchun bo‘sh joy bilan ajrating.
+    - So‘rovlar yaratishda matnli qidiruvlar uchun ILIKE operatoridan foydalaning va qidiruv qiymatlarini "%qiymat%" ko‘rinishida yozing. Raqamli ma’lumotlar uchun bundan foydalanmang.
+    - Agar natija topilmasa, matndagi alifboni tekshiring — barcha harflar bir xil alifboda bo‘lishi kerak, lotin va kirill alifbosida alohida qidiring.
+    - Agar savol odamlar yoki hodimlarning ismlari ma'lumotlari kirill yoki lotin alifbosida bo'lishi mumkin. Har ikkala yozuvda ham qidir va qaysi yozuvdan natija topilsa, shu ma'lumotlarni qaytar.
+    - SQL so‘rovlarida hech qachon bazani o‘zgartiruvchi buyruqlardan foydalanma — faqat o‘qish uchun foydalan (bu qat’iy qoida).
+    - Sana bilan bog‘liq savollarda (kecha, shu yil, oy boshidan, o‘tgan oy va h.k.) javob to‘liq bo‘lishi kerak. Masalan, "yil boshidan" deb so‘ralsa, "2025-yil 1-yanvardan hozirgi kungacha" deb yozing va natijani ko‘rsat.
+    - Loyiha asosiy maqsadi: javoblarni sayt ma’lumotlar bazasiga asoslanib taqdim etish.
+    - Eng yirik tashkilotlar: "Qizilqum fosforit kompleksi MChJ", "Maxam-Chirchiq AJ", "АО Ammofos-Maxam", "АО Navoiyazot", "QONGIROT SODA ZAVODI" MCHJ QK, "AO DEHQONOBOD KALIY ZAVODI"
+        - Tashkilot INNlari: '309341717', '200941518', '200599579', '200002933', '200949269', '206887857'. Shuning uchun umumiy tashkilotlar haqida so‘ralganda, faqat shu INNlardan foydalaning.
+    - Lotlar va sotilgan lotlar haqidagi barcha ma’lumotlar faqat shu korxonalardan olinishi kerak.
+    - Sotilgan lotlarni qidirishda har doim tashkilot INNlaridan foydalaning. Bu majburiy!
+    - Xodimlarning qarindoshlari so‘ralganda, quyidagi tashkilot raqamlarini tanlang:
+        203621367 = O'zkimyosanoat
+        206887857 = Dehqonobod kaliy zavodi
+        200941518 = Maxam-Chirchiq
+        200599579 = Ammofos-Maxam
+        309341717 = Qizilqum fosforit kompleksi
+        200002933 = Navoiyazot
+    - Har doim faqat har bir ustun uchun alohida berilgan namunaviy qiymatlardan foydalaning.
+    - Debitor yoki kreditor haqida ma’lumot so‘ralganda, har doim debtor_creditor1c jadvalidagi type ustunidan foydalaning (debitor, kreditor). Debitor va kreditor uchun vaqt hisoblashda date_created ustunidan foydalaning.
+    - Faqatgina SQL so‘rovini yozing (PostgreSQL sintaksisida).
+    - Xulosa hech qachon asl ma’noni o‘zgartirmasin.
+    - Ko‘p tillilik: Foydalanuvchi savolining tilini aniqlang (o‘zbek, rus yoki ingliz). Agar savol o‘zbek, rus yoki ingliz tilida berilsa, javob ham shu tilda bo‘lishi kerak.
     """
     sql_query = gemini.generate_content(prompt).text.strip()
     return {"sql_query": sql_query}
@@ -154,6 +180,8 @@ def chit_chat_answer(state: State):
     Foydalanuvchi: {state['question']}
 
     Bu savol bazaga bog'liq emas. Shunchaki suhbatlashish ohangida, sodda va tushunarli javob yoz.
+    Muhim eslatma:
+    Agar o‘zingiz haqida so‘ralsa, haqiqiy modelni oshkor qilmang. Quyidagicha javob bering: "Men KimyoSanoat uchun maxsus ishlab chiqilgan chatbotman. Tenzorsoft AI jamoasi tomonidan yaratilgan."
     """
     answer = gemini.generate_content(prompt).text.strip()
     save_chat_to_db(state["session_id"], state["question"], answer)
