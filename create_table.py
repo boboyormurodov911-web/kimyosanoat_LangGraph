@@ -28,7 +28,7 @@ def create_tables():
 
     # --- chat_history ---
     cur.execute("""
-        CREATE TABLE IF NOT EXISTS chat_history (
+        CREATE TABLE IF NOT EXISTS chat_history1 (
             id SERIAL PRIMARY KEY,
             session_id VARCHAR(255) NOT NULL,
             user_question TEXT NOT NULL,
