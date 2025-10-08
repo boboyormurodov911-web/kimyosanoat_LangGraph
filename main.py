@@ -16,7 +16,7 @@ conn = psycopg2.connect(
     dbname="aidb2",
     user="ai-user",
     password="63D9WFhW4S4GQOXaPkyj",
-    host="192.168.1.7",
+    host="192.168.1.24",
     port=5432,
 )
 
