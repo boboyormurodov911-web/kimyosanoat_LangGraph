@@ -13,9 +13,9 @@ from connect_db_for_server import run_query   # SQL query bajarish uchun sizning
 # 🔹 DB ulanish
 # =====================
 conn = psycopg2.connect(
-    dbname="aidb2",
-    user="ai-user",
-    password="63D9WFhW4S4GQOXaPkyj",
+    dbname="kimyosanoataidb",
+    user="kimyosanoatai-user",
+    password="39uWfFEy4qt9orC0MuuJ",
     host="192.168.1.24",
     port=5432,
 )
