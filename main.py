@@ -45,7 +45,7 @@ gemini = genai.GenerativeModel("models/gemini-2.5-flash")
 # =====================
 # 📂 Metadata fayldan o‘qish
 # =====================
-DDL_FILE = os.getenv("DDL_FILE", "ddl.txt")
+DDL_FILE = os.getenv("DDL_FILE", "ddl.sql")
 if not os.path.exists(DDL_FILE):
     raise FileNotFoundError(f"Schema fayl topilmadi: {DDL_FILE}")
 
