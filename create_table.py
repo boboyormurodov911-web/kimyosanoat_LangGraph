@@ -28,6 +28,16 @@ def create_tables():
         """)
 
 
+    #--- chat history ---
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS chat_history (
+    id SERIAL PRIMARY KEY,
+    session_id VARCHAR(255) NOT NULL,
+    user_question TEXT NOT NULL,
+    assistant_answer TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+);""")
+
 
     conn.commit()
     cur.close()
