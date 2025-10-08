@@ -5,10 +5,10 @@ FROM python:3.12-slim
 WORKDIR /app
 
 # requirements.txt faylini ko‘chirib olish
-COPY requirements.txt .
+COPY requerement.txt .
 
 # Kerakli kutubxonalarni o‘rnatish
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requerement.txt
 
 # Loyihangizdagi barcha fayllarni ko‘chirib olish
 COPY . .
