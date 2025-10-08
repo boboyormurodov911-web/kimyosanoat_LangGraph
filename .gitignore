@@ -20,3 +20,29 @@ wheels/
 pip-wheel-metadata/
 share/python-wheels/
 *.egg-info  
+connect_db.py
+# Python loyihasi uchun odatiy ignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+
+# Virtual environment
+.venv/
+env/
+venv/
+
+# IDE fayllar
+.vscode/
+.idea/
+
+# OS fayllari
+.DS_Store
+Thumbs.db
+
+# Maxfiy fayllar
+.env
+secrets/

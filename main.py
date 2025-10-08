@@ -6,17 +6,17 @@ from pydantic import BaseModel
 from langgraph.graph import StateGraph, END
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from connect_db import run_query   # SQL query bajarish uchun sizning mavjud funksiya
+from connect_db_for_server import run_query   # SQL query bajarish uchun sizning mavjud funksiya
 
 
 # =====================
 # 🔹 DB ulanish
 # =====================
 conn = psycopg2.connect(
-    dbname="postgres",
-    user="postgres",
-    password="1",
-    host="127.0.0.1",
+    dbname="aidb2",
+    user="ai-user",
+    password="63D9WFhW4S4GQOXaPkyj",
+    host="192.168.1.7",
     port=5432,
 )
 
