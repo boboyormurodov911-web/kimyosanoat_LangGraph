@@ -3,10 +3,10 @@ import psycopg2.extras
 import os
 
 
-DB_HOST = os.getenv("DB_HOST", "192.168.1.7")
-DB_NAME = os.getenv("DB_NAME", "aidb2")
-DB_USER = os.getenv("DB_USER", "ai-user")
-DB_PASS = os.getenv("DB_PASS", "63D9WFhW4S4GQOXaPkyj")
+DB_HOST = os.getenv("DB_HOST", "192.168.1.24")
+DB_NAME = os.getenv("DB_NAME", "kimyosanoataidb")
+DB_USER = os.getenv("DB_USER", "kimyosanoatai-user")
+DB_PASS = os.getenv("DB_PASS", "39uWfFEy4qt9orC0MuuJ")
 
 def get_connection():
     return psycopg2.connect(
@@ -22,7 +22,7 @@ def save_chat_to_db(session_id: str, question: str, answer: str):
     conn = get_connection()
     with conn.cursor() as cur:
         cur.execute("""
-            INSERT INTO chat_history (session_id, user_question, assistant_answer)
+            INSERT INTO chat_history1 (session_id, user_question, assistant_answer)
             VALUES (%s, %s, %s)
         """, (session_id, question, answer))
     conn.commit()
@@ -33,7 +33,7 @@ def get_last_chats(session_id: str, limit: int = 10):
     with conn.cursor() as cur:
         cur.execute("""
             SELECT user_question, assistant_answer
-            FROM chat_history
+            FROM chat_history1
             WHERE session_id = %s
             ORDER BY created_at DESC
             LIMIT %s

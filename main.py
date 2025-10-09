@@ -1,24 +1,28 @@
 import re
 import os
 import google.generativeai as genai
-from fastapi import FastAPI
+from fastapi import FastAPI,Depends
 from pydantic import BaseModel
 from langgraph.graph import StateGraph, END
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from connect_db_for_server import run_query   # SQL query bajarish uchun sizning mavjud funksiya
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi import HTTPException
 
-
+security = HTTPBasic()
 # =====================
 # 🔹 DB ulanish
 # =====================
-conn = psycopg2.connect(
-    dbname="aidb2",
-    user="ai-user",
-    password="63D9WFhW4S4GQOXaPkyj",
-    host="192.168.1.7",
-    port=5432,
-)
+def get_connection():
+    return psycopg2.connect(
+        dbname="kimyosanoataidb",
+        user="kimyosanoatai-user",
+        password="39uWfFEy4qt9orC0MuuJ",
+        host="192.168.1.24",
+        port=5432,
+    )
+
 
 
 # =====================
@@ -57,21 +61,23 @@ with open(DDL_FILE, "r", encoding="utf-8") as f:
 # 🔹 Chat Memory (DB + session_id)
 # =====================
 def save_chat_to_db(session_id: str, question: str, answer: str):
-    with conn.cursor() as cur:
-        cur.execute("""
-            INSERT INTO chat_history (session_id, user_question, assistant_answer)
-            VALUES (%s, %s, %s)
-        """, (session_id, question, answer))
-        conn.commit()
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                INSERT INTO chat_history1 (session_id, user_question, assistant_answer)
+                VALUES (%s, %s, %s)
+            """, (session_id, question, answer))
+            conn.commit()
 
 
 def get_last_chats(session_id: str, limit: int = 10):
-    with conn.cursor(cursor_factory=RealDictCursor) as cur:
-        cur.execute(
-            "SELECT user_question, assistant_answer FROM chat_history WHERE session_id=%s ORDER BY created_at DESC LIMIT %s",
-            (session_id, limit)
-        )
-        rows = cur.fetchall()
+    with get_connection() as conn:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute(
+                "SELECT user_question, assistant_answer FROM chat_history1 WHERE session_id=%s ORDER BY created_at DESC LIMIT %s",
+                (session_id, limit)
+            )
+            rows = cur.fetchall()
     return [f"User: {r['user_question']}\nAssistant: {r['assistant_answer']}" for r in rows]
 
 
@@ -229,35 +235,39 @@ class QueryRequest(BaseModel):
 
 
 @app.post("/ask")
-def ask_llm(req: QueryRequest):
+def ask_llm(req: QueryRequest,credentials: HTTPBasicCredentials = Depends(security)):
+    
+    if not (credentials.username == "ai-admin" and credentials.password == "ai-admin123"):
+      
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
     api_keys=["AIzaSyDowP73pz1YAtKGjjvq1YeUeq44cuFYh18","AIzaSyCqKkZoSPoYeAQtqFftOr4JbzQArMvJgv4","AIzaSyBFhrn9GqS5l8HNPmhQ9iP8V1OeEeVoS7s","AIzaSyD1qtya5p7LXhhMJdWqUPYwgou04z_9ObI","AIzaSyCNp3PfUWLtXhHSeuyIN5IUf7TxIP9ByCE","AIzaSyCP8Nv35pANT3mVfAz4QPCuQhDq9ik34uA"]
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT number_of_answer FROM javoblar WHERE id = 1")
+            number=cur.fetchone()[0]
+    
 
-    with conn.cursor() as cur:
-        cur.execute("SELECT number_of_answer FROM javoblar WHERE id = 1")
-        number=cur.fetchone()[0]
+        print(number)
 
-    print(number)
+        api_key=api_keys[number%6]
 
-    api_key=api_keys[number%6]
+        print(api_key)
 
-    print(api_key)
-
-    genai.configure(api_key=api_key)
-    global gemini
-    gemini = genai.GenerativeModel("models/gemini-2.5-flash")
+        genai.configure(api_key=api_key)
+        global gemini
+        gemini = genai.GenerativeModel("models/gemini-2.5-flash")
 
 
-    result = graph.invoke({"session_id": req.session_id, "question": req.question})
+        result = graph.invoke({"session_id": req.session_id, "question": req.question})
 
-    with conn.cursor() as cur:
-        # ✅ TO'G'RI SINTAKSIS: column so'zini olib tashlang
-        cur.execute("UPDATE javoblar SET number_of_answer = number_of_answer + 1 WHERE id = 1;")
-        conn.commit()
+        with conn.cursor() as cur:
+            # ✅ TO'G'RI SINTAKSIS: column so'zini olib tashlang
+            cur.execute("UPDATE javoblar SET number_of_answer = number_of_answer + 1 WHERE id = 1;")
+            conn.commit()
 
 
     return {
-        "question": req.question,
-        "is_db": result.get("is_db", False),
-        "sql_query": extract_sql(result["sql_query"]) if result.get("sql_query") else None,
-        "final_answer": result["final_answer"],
+        "query": extract_sql(result["sql_query"]) if result.get("sql_query") else None,
+        "answer": result["final_answer"],
     }
