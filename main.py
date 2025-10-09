@@ -142,6 +142,7 @@ def generate_sql(state: State):
         200599579 = Ammofos-Maxam
         309341717 = Qizilqum fosforit kompleksi
         200002933 = Navoiyazot
+    - Har doim tashkilotlardagi vakansiyalar soni so'ralganda tashkilotdagi shtatlar sonidan ishchilar sonini ayirib hisoblanadi.
     - Har doim faqat har bir ustun uchun alohida berilgan namunaviy qiymatlardan foydalaning.
     - Debitor yoki kreditor haqida ma’lumot so‘ralganda, har doim debtor_creditor1c jadvalidagi type ustunidan foydalaning (debitor, kreditor). Debitor va kreditor uchun vaqt hisoblashda date_created ustunidan foydalaning.
     - Faqatgina SQL so‘rovini yozing (PostgreSQL sintaksisida).
