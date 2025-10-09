@@ -1,14 +1,16 @@
 import re
 import os
 import google.generativeai as genai
-from fastapi import FastAPI
+from fastapi import FastAPI,Depends
 from pydantic import BaseModel
 from langgraph.graph import StateGraph, END
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from connect_db_for_server import run_query   # SQL query bajarish uchun sizning mavjud funksiya
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi import HTTPException
 
-
+security = HTTPBasic()
 # =====================
 # 🔹 DB ulanish
 # =====================
@@ -233,7 +235,12 @@ class QueryRequest(BaseModel):
 
 
 @app.post("/ask")
-def ask_llm(req: QueryRequest):
+def ask_llm(req: QueryRequest,credentials: HTTPBasicCredentials = Depends(security)):
+    
+    if not (credentials.username == "ai-admin" and credentials.password == "ai-admin123"):
+      
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    
     api_keys=["AIzaSyDowP73pz1YAtKGjjvq1YeUeq44cuFYh18","AIzaSyCqKkZoSPoYeAQtqFftOr4JbzQArMvJgv4","AIzaSyBFhrn9GqS5l8HNPmhQ9iP8V1OeEeVoS7s","AIzaSyD1qtya5p7LXhhMJdWqUPYwgou04z_9ObI","AIzaSyCNp3PfUWLtXhHSeuyIN5IUf7TxIP9ByCE","AIzaSyCP8Nv35pANT3mVfAz4QPCuQhDq9ik34uA"]
     with get_connection() as conn:
         with conn.cursor() as cur:
