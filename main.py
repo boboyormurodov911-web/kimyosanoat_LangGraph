@@ -261,8 +261,6 @@ def ask_llm(req: QueryRequest):
 
 
     return {
-        "question": req.question,
-        "is_db": result.get("is_db", False),
-        "sql_query": extract_sql(result["sql_query"]) if result.get("sql_query") else None,
-        "final_answer": result["final_answer"],
+        "query": extract_sql(result["sql_query"]) if result.get("sql_query") else None,
+        "answer": result["final_answer"],
     }
