@@ -1704,7 +1704,7 @@ create table public.sold_lot -- ushbu jadvalda sotilgan lotlar haqida ma'lumotla
     quantity                   integer, -- sotib olingan lot hajmi (o'lchov birligi measure_unit ga bog'liq)
     quantity_in_lot            integer, -- umumiy lot hajmi
     seller_address             varchar(255), -- sotuvchi zavod manzili
-    seller_inn                 varchar(255), -- sotuvchi zavod INN raqami, organization jadvalining inn ustuni bilan bog'langan (yillik yoki oylik sotilgan yoki to'langan yoki yetkazilgan lotlarning soni yoki narxi so'ralganda ushbu qiymatlarni tanlash kerak, majburiy -> (309341717, 200941518, 200599579, 200002933, 200949269, 206887857), o'g'itlar so'ralganda esa umumiy jadvaldagi barcha ma'lumotlarni olish kerak!)
+    seller_inn                 varchar(255), -- sotuvchi zavod INN raqami, organization jadvalining inn ustuni bilan bog'langan (yillik yoki oylik sotilgan yoki to'langan yoki yetkazilgan lotlarning soni yoki narxi so'ralganda ushbu qiymatlarni tanlash kerak, majburiy -> (309341717, 200941518, 200599579, 200002933, 200949269, 206887857, '200202240', '204651678'), o'g'itlar so'ralganda esa umumiy jadvaldagi barcha ma'lumotlarni olish kerak!)
     seller_name                varchar(255), -- sotuvchi zavod nomi 
     session                    integer, -- sessiya raqami (0: aniqlanmagan, 1: soat 13:00 gacha, 2: soat 13:00 dan keyin)
     start_price                double precision, -- boshlang'ich narx
@@ -1765,7 +1765,7 @@ create table public.staff_position -- Ishchilar lavozimi haqidagi jadval. Hodiml
     organization_stir varchar(255), -- tashkilot STIR(inn) raqami (200599579, 206887857, 200941518, 200002933, 203621367, 309341717) 
     personal_count    integer, -- ishchilar soni
     position_name     varchar(255), -- lavozim nomi
-    department_id     bigint -- bo'lim ID raqami (department jadvalining id ustuni bilan bog'langan)
+    department_id     bigint -- bo'lim ID raqami
         constraint fk2rccfqg11kksq37ku44aforg5
             references public.department,
     personal_limit    integer, -- shtat bo'yicha limit
