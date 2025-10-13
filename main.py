@@ -243,12 +243,12 @@ def ask_llm(req: QueryRequest, credentials: HTTPBasicCredentials = Depends(secur
 
     # 1️⃣ API kalitlar ro'yxati
     api_keys = [
-        "AIzaSyDowP73pz1YAtKGjjvq1YeUeq44cuFYh18",
-        "AIzaSyCqKkZoSPoYeAQtqFftOr4JbzQArMvJgv4",
-        "AIzaSyBFhrn9GqS5l8HNPmhQ9iP8V1OeEeVoS7s",
-        "AIzaSyD1qtya5p7LXhhMJdWqUPYwgou04z_9ObI",
-        "AIzaSyCNp3PfUWLtXhHSeuyIN5IUf7TxIP9ByCE",
-        "AIzaSyCP8Nv35pANT3mVfAz4QPCuQhDq9ik34uA",
+        'AIzaSyCthmBOzi8PHcQg0KhdIwAqv21SQ0DQX0s', # Ruslan
+        'AIzaSyB5DzIJNZIOGNFw-ytECJHtuzXZ3_hEIfs', # Hasan
+        'AIzaSyB2S6OeAN4PLI-IlbDWMNIokiNKrox48-o', # Husan
+        'AIzaSyBar5IjWE1Czyc4afj4rBQZ6xCYpHmyHq0', # Abdulaziz
+        'AIzaSyAXw9KQSYX-Ue98JcfEt_kajK5qb1Ggfqg', # Abbos
+        'AIzaSyA6QkvTck3TKxytH3r6B-3AH0AEIfnIw-w' # Anvar
     ]
 
     # 2️⃣ Joriy key indeksini olish
