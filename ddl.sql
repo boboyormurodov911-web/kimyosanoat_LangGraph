@@ -1681,7 +1681,7 @@ create table public.sold_lot -- ushbu jadvalda sotilgan lotlar haqida ma'lumotla
     datetime_updated           timestamp(6) not null, -- BU USTUNDAN MA'LUMOT OLINMASIN! (sana uchun transaction_date yoki transaction_date_as_date ustunidan ma'lumot olinadi)
     account                    varchar(255), -- hisob raqami
     bank_name                  varchar(255), -- bank nomi
-    bargain_status             varchar(255), -- savdo holati (yillik yoki oylik sotilgan lotlar soni yoki narxi so'ralganda -> ('Разблокирован','Оплата','Исполнено'), to'langan lotlar soni yoki narxi so'ralganda -> ('Оплата','Исполнено'), yetkazib berilgan lotlar soni yoki narxi so'ralganda -> ('Исполнено') qiymatlarini tanlash kerak)
+    bargain_status             varchar(255), -- savdo holati (yillik yoki oylik sotilgan lotlar hajmi yoki narxi so'ralganda -> ('Разблокирован','Оплата','Исполнено'), to'langan lotlar hajmi yoki narxi so'ralganda -> ('Оплата','Исполнено'), yetkazib berilgan lotlar hajmi yoki narxi so'ralganda -> ('Исполнено') qiymatlarini tanlash kerak)
     buyer_address              varchar(255), -- xaridor manzili
     buyer_inn                  varchar(255), -- xaridor INN raqami
     buyer_name                 varchar(255), -- xaridor nomi
@@ -1718,7 +1718,7 @@ create table public.sold_lot -- ushbu jadvalda sotilgan lotlar haqida ma'lumotla
     mxik_code                  varchar(255) -- mahsulot MXIK kodi, product jadvalining mxik_code ustuni bilan bog'langan; O'gitlar haqida so'rov kelganda ushbu ustundan, mahsulot haqida so'rov kelganda product_name ustunidan ma'umot olish kerak; O'g'itlarga oid so'rov kelganda ushbu qiymatlar bilan boshlaganlarni tanlash kerak -> (Azotli o'g'itlar = 03102 (mxik_code ILIKE '03102%'). Fosforli o'g'itlar = 03103 (mxik_code ILIKE '03103%') Kaliyli o'g'itlar = 03104 (mxik_code ILIKE '03104%'))
         constraint ckw8n48vcn238hjbui2hj8j
             references public.product(mxik_code),
-    real_quantity_for_amount   double precision, -- bu real_quantity ni chiqarishda ishlatiladi (if measure_unit = тонна then real_quantity_for_amount = quantity_in_lot, if measure_unit = килограмм then real_quantity_for_amount = quantity_in_lot / 1000) 
+    real_quantity_for_amount   double precision, -- Savdoga chiqarilgan lotlar yoki Sotilgan lotlar yoki To'langan lotlar yoki Yetkazilgan lotlar hajmi ya'ni necha tonnaligi so'ralganda ushbu jadvalni tanlash kerak. bu real_quantity ni chiqarishda ishlatiladi (if measure_unit = тонна then real_quantity_for_amount = quantity_in_lot, if measure_unit = килограмм then real_quantity_for_amount = quantity_in_lot / 1000) 
     converted_measure_unit     varchar(255), -- konvertatsiya qilingan o'lchov birligi (misol uchun kilogramm tonnaga konvertatsiya qilinadi)
     product_main_category      varchar(255), -- mahsulotning asosiy kategoriyasi
     create_by                  bigint, -- ma'lumotni yaratgan foydalanuvchi identifikatori
