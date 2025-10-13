@@ -788,8 +788,8 @@ create table public.lot -- ushbu jadvalda lotlar haqida ma'lumotlar saqlanadi
     seller_name           varchar(255), -- sotuvchi tashkilot nomi (yillik yoki oylik, sotuvga chiqarilgan lotlar soni yoki narxi haqida so'ralganda seller_name ustunidan ushbu qiymatlarni tanlab chiqarish kerak: -> SELECT COUNT(*) FROM public.lot l WHERE EXISTS (SELECT 1 FROM (VALUES ('АО Fargonaazot'),('Maxam-Chirchiq'),('АО Ammofos-Maxam'),('АО Navoiyazot'),('"QONGIROT SODA ZAVODI" MCHJ QK'),('AO "DEHQONOBOD KALIY ZAVODI"')) AS names(name) WHERE l.seller_name ILIKE CONCAT('%', names.name, '%'));)
     seller_region         varchar(255), -- sotuvchi tashkilot viloyati
     session               integer, -- sessiya raqami (1: kunduzgi, 2: kechki)
-    set_volume_tons       varchar(255), -- tashkilot tomonidan sotish uchun chiqarilgan lot miqdori, (tonna) 
-    sold_volume_tons      varchar(255), -- shu paytgacha sotilgan lotlarning miqdori (tonna)
+    set_volume_tons       varchar(255), -- tashkilot tomonidan sotish uchun chiqarilgan lot hajmi, (tonna)
+    sold_volume_tons      varchar(255), -- shu paytgacha sotilgan lotlarning hajmi (tonna)
     sold_volume_uzs       varchar(255), -- Sotilgan lotlarning qiymati (so'm) 
     create_by             bigint, -- yaratuvchi
     product_main_category varchar(255) -- mahsulot asosiy kategoriyasi
