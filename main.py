@@ -237,37 +237,35 @@ class QueryRequest(BaseModel):
 
 
 @app.post("/ask")
-def ask_llm(req: QueryRequest,credentials: HTTPBasicCredentials = Depends(security)):
-    
+def ask_llm(req: QueryRequest, credentials: HTTPBasicCredentials = Depends(security)):
     if not (credentials.username == "ai-admin" and credentials.password == "ai-admin123"):
-      
         raise HTTPException(status_code=401, detail="Unauthorized")
-    
-    api_keys=["AIzaSyDowP73pz1YAtKGjjvq1YeUeq44cuFYh18","AIzaSyCqKkZoSPoYeAQtqFftOr4JbzQArMvJgv4","AIzaSyBFhrn9GqS5l8HNPmhQ9iP8V1OeEeVoS7s","AIzaSyD1qtya5p7LXhhMJdWqUPYwgou04z_9ObI","AIzaSyCNp3PfUWLtXhHSeuyIN5IUf7TxIP9ByCE","AIzaSyCP8Nv35pANT3mVfAz4QPCuQhDq9ik34uA"]
+
+    api_keys = [
+        "AIzaSyDowP73pz1YAtKGjjvq1YeUeq44cuFYh18",
+        "AIzaSyCqKkZoSPoYeAQtqFftOr4JbzQArMvJgv4",
+        "AIzaSyBFhrn9GqS5l8HNPmhQ9iP8V1OeEeVoS7s",
+        "AIzaSyD1qtya5p7LXhhMJdWqUPYwgou04z_9ObI",
+        "AIzaSyCNp3PfUWLtXhHSeuyIN5IUf7TxIP9ByCE",
+        "AIzaSyCP8Nv35pANT3mVfAz4QPCuQhDq9ik34uA",
+    ]
+
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("SELECT number_of_answer FROM javoblar WHERE id = 1")
-            number=cur.fetchone()[0]
-    
+            number = cur.fetchone()[0]
 
-        print(number)
-
-        api_key=api_keys[number%6]
-
-        print(api_key)
-
+        api_key = api_keys[number % 6]
         genai.configure(api_key=api_key)
         global gemini
         gemini = genai.GenerativeModel("models/gemini-2.5-flash")
 
-
+        # 🔥 MUHIM: endi graph.invoke() ni shu joydan keyin chaqirish
         result = graph.invoke({"session_id": req.session_id, "question": req.question})
 
         with conn.cursor() as cur:
-            # ✅ TO'G'RI SINTAKSIS: column so'zini olib tashlang
             cur.execute("UPDATE javoblar SET number_of_answer = number_of_answer + 1 WHERE id = 1;")
             conn.commit()
-
 
     return {
         "query": extract_sql(result["sql_query"]) if result.get("sql_query") else None,
