@@ -241,6 +241,7 @@ def ask_llm(req: QueryRequest, credentials: HTTPBasicCredentials = Depends(secur
     if not (credentials.username == "ai-admin" and credentials.password == "ai-admin123"):
         raise HTTPException(status_code=401, detail="Unauthorized")
 
+    # 1️⃣ API kalitlar ro'yxati
     api_keys = [
         "AIzaSyDowP73pz1YAtKGjjvq1YeUeq44cuFYh18",
         "AIzaSyCqKkZoSPoYeAQtqFftOr4JbzQArMvJgv4",
@@ -250,24 +251,53 @@ def ask_llm(req: QueryRequest, credentials: HTTPBasicCredentials = Depends(secur
         "AIzaSyCP8Nv35pANT3mVfAz4QPCuQhDq9ik34uA",
     ]
 
+    # 2️⃣ Joriy key indeksini olish
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("SELECT number_of_answer FROM javoblar WHERE id = 1")
             number = cur.fetchone()[0]
 
-        api_key = api_keys[number % 6]
-        genai.configure(api_key=api_key)
-        global gemini
-        gemini = genai.GenerativeModel("models/gemini-2.5-flash")
+    # 3️⃣ Kalitni tanlash va modelni yangilash (GEMINI uchun global sozlash)
+    api_key = api_keys[number % len(api_keys)]
+    genai.configure(api_key=api_key)
+    global gemini
+    gemini = genai.GenerativeModel("models/gemini-2.5-flash")
 
-        # 🔥 MUHIM: endi graph.invoke() ni shu joydan keyin chaqirish
-        result = graph.invoke({"session_id": req.session_id, "question": req.question})
+    # 4️⃣ Faqat endi LangGraph ishlasin (to‘g‘ri API bilan)
+    try:
+        result = graph.invoke({
+            "session_id": req.session_id,
+            "question": req.question
+        })
+    except Exception as e:
+        # 429 bo‘lsa boshqa kalitga o‘tish mexanizmi
+        if "ResourceExhausted" in str(e):
+            for alt_key in api_keys:
+                try:
+                    genai.configure(api_key=alt_key)
+                    gemini = genai.GenerativeModel("models/gemini-2.5-flash")
+                    result = graph.invoke({
+                        "session_id": req.session_id,
+                        "question": req.question
+                    })
+                    break
+                except Exception as e2:
+                    if "ResourceExhausted" in str(e2):
+                        continue
+                    else:
+                        raise e2
+        else:
+            raise e
 
+    # 5️⃣ So‘rov sonini oshirish
+    with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("UPDATE javoblar SET number_of_answer = number_of_answer + 1 WHERE id = 1;")
             conn.commit()
 
+    # 6️⃣ Natijani qaytarish
     return {
-        "query": extract_sql(result["sql_query"]) if result.get("sql_query") else None,
-        "answer": result["final_answer"],
+        "query": extract_sql(result.get("sql_query")) if result.get("sql_query") else None,
+        "answer": result.get("final_answer"),
     }
+
