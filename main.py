@@ -131,10 +131,11 @@ def generate_sql(state: State):
     - SQL so‘rovlarida hech qachon bazani o‘zgartiruvchi buyruqlardan foydalanma — faqat o‘qish uchun foydalan (bu qat’iy qoida).
     - Sana bilan bog‘liq savollarda (kecha, shu yil, oy boshidan, o‘tgan oy va h.k.) javob to‘liq bo‘lishi kerak. Masalan, "yil boshidan" deb so‘ralsa, "2025-yil 1-yanvardan hozirgi kungacha" deb yozing va natijani ko‘rsat.
     - Loyiha asosiy maqsadi: javoblarni sayt ma’lumotlar bazasiga asoslanib taqdim etish.
-    - Eng yirik tashkilotlar: "Qizilqum fosforit kompleksi MChJ", "Maxam-Chirchiq AJ", "АО Ammofos-Maxam", "АО Navoiyazot", "QONGIROT SODA ZAVODI" MCHJ QK, "AO DEHQONOBOD KALIY ZAVODI", "Farg‘onaazot AJ", "Indorama Kokand Fertilizers and Chemicals AJ"
-        - Tashkilot INNlari: '309341717', '200941518', '200599579', '200002933', '200949269', '206887857', '200202240', '204651678'. Shuning uchun umumiy tashkilotlar haqida so‘ralganda, faqat shu INNlardan foydalaning.
-    - Lotlar va sotilgan lotlar haqidagi barcha ma’lumotlar faqat shu korxonalardan olinishi kerak.
-    - Sotilgan lotlarni qidirishda har doim tashkilot INNlaridan foydalaning. Bu majburiy!
+    - Lotlar va sotilgan lotlar haqidagi barcha ma’lumotlar faqat shu korxonalardan olinishi kerak:
+        - Eng yirik tashkilotlar: "Qizilqum fosforit kompleksi MChJ", "Maxam-Chirchiq AJ", "АО Ammofos-Maxam", "АО Navoiyazot", "QONGIROT SODA ZAVODI" MCHJ QK, "AO DEHQONOBOD KALIY ZAVODI", "Farg‘onaazot AJ", "Indorama Kokand Fertilizers and Chemicals AJ"
+        - Savdoga chiqarilgan lotlarni qidirishda har doim yuqoridagi tashkilotlar nomlarini ishlatish kerak.
+            - Tashkilot INNlari: '309341717', '200941518', '200599579', '200002933', '200949269', '206887857', '200202240', '204651678'. Shuning uchun umumiy tashkilotlar haqida so‘ralganda, faqat shu INNlardan foydalaning.
+            - Sotilgan yoki savdoga chiqarilgan yoki to'langan lotlarni qidirishda har doim tashkilot INNlaridan foydalaning. Bu majburiy!
     - Xodimlarning qarindoshlari so‘ralganda, quyidagi tashkilot raqamlarini tanlang:
         203621367 = O'zkimyosanoat
         206887857 = Dehqonobod kaliy zavodi
