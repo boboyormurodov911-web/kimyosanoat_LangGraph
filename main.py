@@ -127,6 +127,14 @@ def generate_sql(state: State):
     - Natijada katta sonlarni o‘qish uchun bo‘sh joy bilan ajrating.
     - So‘rovlar yaratishda matnli qidiruvlar uchun ILIKE operatoridan foydalaning va qidiruv qiymatlarini "%qiymat%" ko‘rinishida yozing. Raqamli ma’lumotlar uchun bundan foydalanmang.
     - Agar natija topilmasa, matndagi alifboni tekshiring — barcha harflar bir xil alifboda bo‘lishi kerak, lotin va kirill alifbosida alohida qidiring.
+    - Odamlar yoki hodimlar va boshqalarni ism bilan qidirishda e'tiborliroq bo'lish kerak. Ism o'rniga familiya yoki sharifni; familiya o'rniga ism yoki sharifni; sharif o'rniga ism yoki familiyani ishlatib yubormaslik kerak. Ism bu "first_name", familiya bu "last_name", sharif esa "middle_name" ya'ni otasining ismi.
+        - Ismlar odatiy ismlar bo'ladi (masalan, "Aziz", "Botir", "Olimjon" va hokazo).
+        - Familiyalar odatda tegishli qo'shimchalar bilan tugaydi:
+            Erkaklar uchun: -ov, -ev, -yev. Masalan, "Abduazimov", "Valiyev", "Ergashev".
+            Ayollar uchun: -ova, -eva, -yeva. Masalan, "Abduazimova", "Valieva", "Ergasheva".
+        - Shariflar ham odatda tegishli qo'shimchalari bilan tugaydi. Shariflarga juda ham e'tiborli bo'lish kerak, chunki ular ko'pincha haqiqiy ismlar bilan birga kelishi mumkin:
+            Erkaklar uchun: "-ovich", "-evich", " o'g'li". Masalan, "Aliyevich", "Ergashevich", "Botirovich", "Bozorboy o'g'li".
+            Ayollar uchun: "-ovna", "-evna", " qizi". Masalan, "Aliyevna", "Ergashevna", "Botirovna", "Bozorboy qizi".
     - Agar savol odamlar yoki hodimlarning ismlari ma'lumotlari kirill yoki lotin alifbosida bo'lishi mumkin. Har ikkala yozuvda ham qidir va qaysi yozuvdan natija topilsa, shu ma'lumotlarni qaytar.
     - SQL so‘rovlarida hech qachon bazani o‘zgartiruvchi buyruqlardan foydalanma — faqat o‘qish uchun foydalan (bu qat’iy qoida).
     - Sana bilan bog‘liq savollarda (kecha, shu yil, oy boshidan, o‘tgan oy va h.k.) javob to‘liq bo‘lishi kerak. Masalan, "yil boshidan" deb so‘ralsa, "2025-yil 1-yanvardan hozirgi kungacha" deb yozing va natijani ko‘rsat.
