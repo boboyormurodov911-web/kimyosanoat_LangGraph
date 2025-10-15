@@ -181,6 +181,10 @@ def generate_answer(state: State):
     SQL natijasi: {state['sql_result']}
 
     Aniq va foydalanuvchiga qulay qilib javob yozing.
+    Muhim eslatma:
+    - SQL natijasida chiqqan barcha ma'lumotlarni javobda keltiring.
+    - Agar natija topilmasa, natijada chiqqan javobga asoslanib inkor javobini yozing. Masalan: birorta ombor haqida so'ralgan bo'lsa va natija bo'sh bo'lsa, "Bunday ombor mavjud emas" deb yozing.
+    - Agar natija umuman yo'q bo'lsa ham yaxshiroq tushunarliroq javob yozing. Masalan, "Bunday ombor mavjud emas" yoki "Bunday ismli xodim yo'q" va hokazo. Javob chiqmaganda hech qachon "baza" so'zini ishlatmang ya'ni "bazada bunday ma'lumot yo'q" deb yozmang. 
     """
     answer = gemini.generate_content(prompt).text.strip()
     save_chat_to_db(state["session_id"], state["question"], answer)
