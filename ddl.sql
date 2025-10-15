@@ -2160,6 +2160,28 @@ create table public.queue_code -- Ushbu jadvalda foydalanuvchilarga yuborilgan t
             references public.warehouse
 );
 
+create table public.warehouse_amount -- Ushbu jadvalda omborlardagi mahsulotlar miqdori haqida ma'lumotlar saqlanadi. Tashkilot omborlaridagi mahsulotlar miqdori va qoldiqlarini kuzatib borish uchun shu jadvaldan foydalanish kerak
+(
+    id               bigint default nextval('warehouse_amount_id_seq'::regclass) not null -- ID raqam 
+        primary key,
+    datetime_created timestamp(6) not null, -- ma'lumot yaratilgan sana va vaqt
+    datetime_updated timestamp(6) not null, -- ma'lumot yangilangan sana va vaqt
+    date             date, -- sana va vaqt uchun datetime_created ustuni ishlatiladi, chunki date ustuni bo'sh
+    quantity         double precision, -- ombordagi mahsulot miqdori
+    organization_id  bigint -- tashkilot ID raqami (organization jadvalining id ustuni bilan bog'langan)
+        constraint fknnfecrjwcwhl2f2omnbji2dan
+            references organization,
+    product_id       bigint -- mahsulot ID raqami (product jadvalining id ustuni bilan bog'langan)
+        constraint fk7fl5xps3o5ve3b9w7u3p8a6yb
+            references product,
+    warehouse_id     bigint -- ombor ID raqami (warehouse jadvalining id ustuni bilan bog'langan)
+        constraint fk4r1r8cvovrgoil2w5f8lgcxif
+            references warehouse,
+    create_by        bigint, -- yaratuvchi (foydalanuvchi) ID raqami
+    constraint unique_warehouse_amount
+        unique (organization_id, warehouse_id, product_id)
+);
+
 create table public.warehouse_balance -- Ushbu jadvalda omborlardagi balanslar haqida ma'lumotlar saqlanadi
 (
     id               bigint default nextval('warehouse_balance_id_seq'::regclass) not null -- ID raqam (primary key)
