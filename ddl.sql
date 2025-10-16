@@ -2160,7 +2160,7 @@ create table public.queue_code -- Ushbu jadvalda foydalanuvchilarga yuborilgan t
             references public.warehouse
 );
 
-create table public.warehouse_amount -- Ushbu jadvalda omborlardagi mahsulotlar miqdori haqida ma'lumotlar saqlanadi. Tashkilot omborlaridagi mahsulotlar miqdori va qoldiqlarini kuzatib borish uchun shu jadvaldan foydalanish kerak
+create table public.warehouse_amount -- Ushbu jadvalda omborlardagi mahsulotlar miqdori haqida ma'lumotlar saqlanadi. Tashkilot omborlaridagi mahsulotlar miqdori va qoldiqlarini kuzatib borish uchun shu jadvaldan foydalanish kerak. Vakolatli omborlar qoldiqlarini chiqarishda ham shu jadvaldan foydalanish kerak.
 (
     id               bigint default nextval('warehouse_amount_id_seq'::regclass) not null -- ID raqam 
         primary key,
@@ -2180,27 +2180,6 @@ create table public.warehouse_amount -- Ushbu jadvalda omborlardagi mahsulotlar 
     create_by        bigint, -- yaratuvchi (foydalanuvchi) ID raqami
     constraint unique_warehouse_amount
         unique (organization_id, warehouse_id, product_id)
-);
-
-create table public.warehouse_balance -- Ushbu jadvalda omborlardagi balanslar haqida ma'lumotlar saqlanadi
-(
-    id               bigint default nextval('warehouse_balance_id_seq'::regclass) not null -- ID raqam (primary key)
-        primary key,
-    datetime_created timestamp(6), -- ma'lumot yaratilgan sana va vaqt, bu ustunni umumiy sana sifatida ishlatish kerak
-    datetime_updated timestamp(6), -- ma'lumot yangilangan sana va vaqt
-    date             date, -- sana uchun datetime_created ustuni ishlatiladi, chunki date ustuni bo'sh
-    quantity         double precision, -- kirim-chiqim bo'lgan mahsulot miqdori
-    organization_id  bigint -- tashkilot ID raqami (organization jadvalining id ustuni bilan bog'langan)
-        constraint fkj4s4q6jprc16pddf51y0ccepv
-            references public.organization,
-    product_id       varchar(255), -- mahsulot ID raqami (product jadvalining id ustuni bilan bog'langan)
-    warehouse_id     bigint -- ombor ID raqami (warehouse jadvalining id ustuni bilan bog'langan)
-        constraint fk30mkn1s49k1ps85u08j7rkhow
-            references public.warehouse,
-    product_name     varchar(255), -- mahsulot nomi
-    create_by        bigint, -- yaratuvchi (foydalanuvchi) ID raqami
-    constraint unique_warehouse_balance
-        unique (organization_id, warehouse_id, product_id, product_name)
 );
 
 create table public.warehouse_bijra_contract -- Ushbu jadvalda omborlar va bijra o'rtasidagi shartnomalar haqida ma'lumotlar saqlanadi (Many to Many Table)
