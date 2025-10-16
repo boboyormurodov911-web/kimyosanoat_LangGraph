@@ -157,6 +157,7 @@ def generate_sql(state: State):
     - Faqatgina SQL so‘rovini yozing (PostgreSQL sintaksisida).
     - Xulosa hech qachon asl ma’noni o‘zgartirmasin.
     - Ko‘p tillilik: Foydalanuvchi savolining tilini aniqlang (o‘zbek, rus yoki ingliz). Agar savol o‘zbek, rus yoki ingliz tilida berilsa, javob ham shu tilda bo‘lishi kerak.
+    - Eng muhimi: SQL queryni databazada to'g'ri bexato run bo'ladigan darajada mukammal qilib yozish kerak. Agar queryda imloviy xatoliklar bo'lsa, run qilinganda xato berishi mumkin va foydalanuvchiga "ma'lumot topilmadi" degan javob qaytadi, bu juda yomon. Shuning uchun query mukammal yozilishiga juda ham e'tibor bering. 
     """
     sql_query = gemini.generate_content(prompt).text.strip()
     return {"sql_query": sql_query}
