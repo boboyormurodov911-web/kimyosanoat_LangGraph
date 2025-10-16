@@ -70,15 +70,38 @@ def save_chat_to_db(session_id: str, question: str, answer: str):
             conn.commit()
 
 
+# 3️⃣ get_last_chats() — asosiy tarix olish funksiyasi
 def get_last_chats(session_id: str, limit: int = 10):
     with get_connection() as conn:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute(
-                "SELECT user_question, assistant_answer FROM chat_history1 WHERE session_id=%s ORDER BY created_at DESC LIMIT %s",
+                """
+                SELECT user_question, assistant_answer
+                FROM chat_history1
+                WHERE session_id = %s
+                ORDER BY created_at DESC
+                LIMIT %s
+                """,
                 (session_id, limit)
             )
             rows = cur.fetchall()
-    return [f"User: {r['user_question']}\nAssistant: {r['assistant_answer']}" for r in rows]
+    return rows
+
+# 4️⃣ Context Rebuilder — bu get_last_chats() dan foydalanadi
+def rebuild_chat_context(session_id: str, limit: int = 10) -> str:
+    rows = get_last_chats(session_id, limit)
+    if not rows:
+        return ""
+
+    # eng eski → eng yangi tartibda
+    rows = list(reversed(rows))
+    context_lines = []
+    for i, r in enumerate(rows, 1):
+        context_lines.append(f"User{i}: {r['user_question']}")
+        context_lines.append(f"Assistant{i}: {r['assistant_answer']}")
+
+    context_text = "\n".join(context_lines).strip()
+    return f"Oldingi suhbat tarixi:\n{context_text}\n\nEndi tabiiy ravishda javob bering, ushbu kontekst bilan davomiylikni saqlang."
 
 
 # =====================
@@ -113,7 +136,7 @@ def is_db_question(state: State):
 
 # 1️⃣ Savoldan SQL query tuzish
 def generate_sql(state: State):
-    chat_context = get_last_chats(state["session_id"])
+    chat_context = rebuild_chat_context(state["session_id"])
     prompt = f"""
     Sen dunyodagi eng kuchli SQL agentisan. Seni asosiy vazifang - ma'lumotlar bazasi sxemasiga asoslanib, eng aniq SQL so‘rovini yaratish va savolga to‘g‘ri javob berishdir.
     {chat_context}
@@ -174,7 +197,7 @@ def execute_sql(state: State):
 
 # 3️⃣ Yakuniy javob tayyorlash (DB asosida)
 def generate_answer(state: State):
-    chat_context = get_last_chats(state["session_id"])
+    chat_context = rebuild_chat_context(state["session_id"])
     prompt = f"""
     {chat_context}
 
