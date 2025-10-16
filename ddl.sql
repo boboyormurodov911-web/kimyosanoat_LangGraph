@@ -2191,7 +2191,7 @@ create table public.warehouse_bijra_contract -- Ushbu jadvalda omborlar va bijra
     primary key (warehouse_id, contract_number)
 );
 
-create table public.warehouse_stock_income_output -- Ushbu jadvalda omborlardagi mahsulotlarning kirim-chiqim ma'lumotlari saqlanadi
+create table public.warehouse_stock_income_output -- Ushbu jadvalda omborlardagi mahsulotlarning birjadagi kirim-chiqim ma'lumotlari saqlanadi. Umumiy ma'lumotlar olish uchun transfer jadvalidan foydalanish kerak.
 (
     id               bigint       not null -- ID raqam (primary key)
         primary key,
@@ -2214,7 +2214,7 @@ create table public.warehouse_stock_income_output -- Ushbu jadvalda omborlardagi
     create_by        bigint -- yaratuvchi foydalanuvchi ID raqami
 );
 
-create table public.stock_income_output_detail -- Ushbu jadvalda omborlardagi mahsulotlarning kirim-chiqim tafsilotlari haqida ma'lumotlar saqlanadi
+create table public.stock_income_output_detail -- Ushbu jadvalda omborlardagi mahsulotlarning kirim-chiqim tafsilotlari haqida 1C dasturidan keladigan ma'lumotlar saqlanadi. Umumiy ma'lumotlar olish uchun transfer jadvalidan foydalanish kerak.
 (
     id                               bigint       not null -- ID raqam (primary key)
         primary key,
