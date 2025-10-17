@@ -211,6 +211,7 @@ def generate_answer(state: State):
     - Agar natija topilmasa, natijada chiqqan javobga asoslanib inkor javobini yozing. Masalan: birorta ombor haqida so'ralgan bo'lsa va natija bo'sh bo'lsa, "Bunday ombor mavjud emas" deb yozing.
     - Agar natija umuman yo'q bo'lsa ham yaxshiroq tushunarliroq javob yozing. Masalan, "Bunday ombor mavjud emas" yoki "Bunday ismli xodim yo'q" va hokazo. Javob chiqmaganda hech qachon "baza" so'zini ishlatmang ya'ni "bazada bunday ma'lumot yo'q" deb yozmang.
     - Miqdorga oid javoblar aynan bir ko'rsatkichda bo'lishi kerak. Miqdor hisoblanganda qaysi o'lov birligida ekanligini aniq qilib ko'rsating. Masalan, "5000 kg" yoki "5 tonna" yoki "1000 dona/ta" deb yozing.
+    - Sonlarni chiqarishda bunda javob chiqarmang: "Buxoro viloyatidagi omborlarda jami **420.20 tonna** karbamid qolgan." ya'ni son va birlik orasida qo'shimcha belgilar ishlatmang. Faqat shunday yozing: "Buxoro viloyatidagi omborlarda jami 420.20 tonna karbamid qolgan."
     """
     answer = gemini.generate_content(prompt).text.strip()
     save_chat_to_db(state["session_id"], state["question"], answer)
