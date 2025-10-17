@@ -182,6 +182,8 @@ def generate_sql(state: State):
     - Ko‘p tillilik: Foydalanuvchi savolining tilini aniqlang (o‘zbek, rus yoki ingliz). Agar savol o‘zbek, rus yoki ingliz tilida berilsa, javob ham shu tilda bo‘lishi kerak.
     - Eng muhimi: SQL queryni databazada to'g'ri bexato run bo'ladigan darajada mukammal qilib yozish kerak. Agar queryda imloviy xatoliklar bo'lsa, run qilinganda xato berishi mumkin va foydalanuvchiga "ma'lumot topilmadi" degan javob qaytadi, bu juda yomon. Shuning uchun query mukammal yozilishiga juda ham e'tibor bering.
     - Query tuzishda ROUND funksiyasidan foydalanmang, chunki u ba'zan xato natija beradi. ROUND(SUM(column) / 1000.0, 2) <= bunday yozmang.
+    - Sonlarni chiqarishda bunda javob chiqarmang: "Buxoro viloyatidagi omborlarda jami **420.20 tonna** karbamid qolgan." ya'ni son va birlik orasida qo'shimcha belgilar ishlatmang. Faqat shunday yozing: "Buxoro viloyatidagi omborlarda jami 420.20 tonna karbamid qolgan.". Umuman hech qanday qo'shimcha belgilar ishlatmang son va birlik orasida. Bu juda muhim va qat'iy qoida.
+    - Agar foydalanuvchi son ko'rsatkichlariga doir savollar so'raganda, javobda 0 qiymati chiqsa unga inkor shaklida javob yozing. Masalan, "Bu omborda so'ralgan mahsulot yo'q". Agar savol bir necha element bo'yicha bo'lsa, masalan, "Qaysi omborlarda X mahsulot bor?" va natija ayrim omborlar uchun 0 bo'lsa, 0 chiqqan omborlarni chiqarmaslik kerak, shunchaki qiymati mavjud elementlarni tanlash kerak.
     """
     sql_query = gemini.generate_content(prompt).text.strip()
     return {"sql_query": sql_query}
@@ -211,8 +213,6 @@ def generate_answer(state: State):
     - Agar natija topilmasa, natijada chiqqan javobga asoslanib inkor javobini yozing. Masalan: birorta ombor haqida so'ralgan bo'lsa va natija bo'sh bo'lsa, "Bunday ombor mavjud emas" deb yozing.
     - Agar natija umuman yo'q bo'lsa ham yaxshiroq tushunarliroq javob yozing. Masalan, "Bunday ombor mavjud emas" yoki "Bunday ismli xodim yo'q" va hokazo. Javob chiqmaganda hech qachon "baza" so'zini ishlatmang ya'ni "bazada bunday ma'lumot yo'q" deb yozmang.
     - Miqdorga oid javoblar aynan bir ko'rsatkichda bo'lishi kerak. Miqdor hisoblanganda qaysi o'lov birligida ekanligini aniq qilib ko'rsating. Masalan, "5000 kg" yoki "5 tonna" yoki "1000 dona/ta" deb yozing.
-    - Sonlarni chiqarishda bunda javob chiqarmang: "Buxoro viloyatidagi omborlarda jami **420.20 tonna** karbamid qolgan." ya'ni son va birlik orasida qo'shimcha belgilar ishlatmang. Faqat shunday yozing: "Buxoro viloyatidagi omborlarda jami 420.20 tonna karbamid qolgan."
-    - Agar foydalanuvchi son ko'rsatkichlariga doir savollar so'raganda, javobda 0 qiymati chiqsa unga inkor shaklida javob yozing. Masalan, "Bu omborda so'ralgan mahsulot yo'q". Agar savol bir necha element bo'yicha bo'lsa, masalan, "Qaysi omborlarda X mahsulot bor?" va natija ayrim omborlar uchun 0 bo'lsa, 0 chiqqan omborlarni chiqarmaslik kerak, shunchaki qiymati mavjud elementlarni tanlash kerak.
     """
     answer = gemini.generate_content(prompt).text.strip()
     save_chat_to_db(state["session_id"], state["question"], answer)
