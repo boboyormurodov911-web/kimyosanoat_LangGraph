@@ -2160,7 +2160,7 @@ create table public.queue_code -- Ushbu jadvalda foydalanuvchilarga yuborilgan t
             references public.warehouse
 );
 
-create table public.warehouse_amount -- Ushbu jadvalda omborlardagi mahsulotlar miqdori haqida ma'lumotlar saqlanadi. Tashkilot omborlaridagi mahsulotlar miqdori va qoldiqlarini kuzatib borish uchun shu jadvaldan foydalanish kerak. Vakolatli omborlar qoldiqlarini chiqarishda ham shu jadvaldan foydalanish kerak.
+create table public.warehouse_amount -- Ushbu jadvalda omborlardagi mahsulotlar miqdori haqida ma'lumotlar saqlanadi. Tashkilot omborlaridagi mahsulotlar miqdori va qoldiqlarini kuzatib borish uchun shu jadvaldan foydalanish kerak. Vakolatli omborlar qoldiqlarini chiqarishda ham shu jadvaldan foydalanish kerak. Viloyati yoki tuman bo'yicha qaysidur og'it qoldig'i(miqdori) so'ralganda shu jadvaldan foydalanish kerak.
 (
     id               bigint default nextval('warehouse_amount_id_seq'::regclass) not null -- ID raqam 
         primary key,
