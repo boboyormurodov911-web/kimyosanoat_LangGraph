@@ -1,4 +1,4 @@
-create table public.agro_fertilizer_demand -- O'gitlarga bo'lgan talablar haqidagi ma'lumotlarni faqatgina public.crop jadvalidan, yetkazilgan o'g'itlar bo'yicha esa public.sold_lot jadvalidan ma'lumot olish kerak!
+create table public.agro_fertilizer_demand -- O'gitlarga bo'lgan talablar haqidagi ma'lumotlarni faqatgina public.crop jadvalidan, yetkazilgan o'g'itlar bo'yicha esa public.sold_lot jadvalidan ma'lumot olish kerak! Viloyat va tuman bo'yicha o'g'itlar miqdori yoki qoldig'i so'ralganda public.warehouse_amount jadvalidan foydalanish kerak!
 (
     id                 bigint       not null 
         primary key,
