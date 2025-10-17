@@ -2167,7 +2167,7 @@ create table public.warehouse_amount -- Ushbu jadvalda omborlardagi mahsulotlar 
     datetime_created timestamp(6) not null, -- ma'lumot yaratilgan sana va vaqt
     datetime_updated timestamp(6) not null, -- ma'lumot yangilangan sana va vaqt
     date             date, -- sana va vaqt uchun datetime_created ustuni ishlatiladi, chunki date ustuni bo'sh
-    quantity         double precision, -- ombordagi mahsulot miqdori
+    quantity         double precision, -- ombordagi mahsulot miqdori. bu qiymat kilogrammda kelgan. tonnada chiqarish kerak. ya'ni chiqqan javobni 1000ga bo'lish kerak.
     organization_id  bigint -- tashkilot ID raqami (organization jadvalining id ustuni bilan bog'langan)
         constraint fknnfecrjwcwhl2f2omnbji2dan
             references organization,
