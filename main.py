@@ -181,6 +181,7 @@ def generate_sql(state: State):
     - Ko‘p tillilik: Foydalanuvchi savolining tilini aniqlang (o‘zbek, rus yoki ingliz). Agar savol o‘zbek, rus yoki ingliz tilida berilsa, javob ham shu tilda bo‘lishi kerak.
     - Eng muhimi: SQL queryni databazada to'g'ri bexato run bo'ladigan darajada mukammal qilib yozish kerak. Agar queryda imloviy xatoliklar bo'lsa, run qilinganda xato berishi mumkin va foydalanuvchiga "ma'lumot topilmadi" degan javob qaytadi, bu juda yomon. Shuning uchun query mukammal yozilishiga juda ham e'tibor bering.
     - Query tuzishda ROUND funksiyasidan foydalanmang, chunki u ba'zan xato natija beradi. ROUND(SUM(column) / 1000.0, 2) <= bunday yozmang.
+    - Query tuzishda WITH funksiyasidan foydalanmang, chunki u foydalanuvchiga javob chiqarishda xatolik beradi.
     """
     sql_query = gemini.generate_content(prompt).text.strip()
     return {"sql_query": sql_query}
