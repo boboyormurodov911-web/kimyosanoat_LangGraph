@@ -340,5 +340,6 @@ def ask_llm(req: QueryRequest, credentials: HTTPBasicCredentials = Depends(secur
     return {
         "query": extract_sql(result.get("sql_query")) if result.get("sql_query") else None,
         "answer": result.get("final_answer"),
+        "query_result":result.get("sql_result")
     }
 
