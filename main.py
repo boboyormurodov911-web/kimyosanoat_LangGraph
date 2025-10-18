@@ -287,10 +287,10 @@ def ask_llm(req: QueryRequest, credentials: HTTPBasicCredentials = Depends(secur
     api_keys = [
         'AIzaSyCthmBOzi8PHcQg0KhdIwAqv21SQ0DQX0s', # Ruslan
         'AIzaSyB5DzIJNZIOGNFw-ytECJHtuzXZ3_hEIfs', # Hasan
-        'AIzaSyB2S6OeAN4PLI-IlbDWMNIokiNKrox48-o', # Husan
         'AIzaSyBar5IjWE1Czyc4afj4rBQZ6xCYpHmyHq0', # Abdulaziz
         'AIzaSyAXw9KQSYX-Ue98JcfEt_kajK5qb1Ggfqg', # Abbos
-        'AIzaSyA6QkvTck3TKxytH3r6B-3AH0AEIfnIw-w' # Anvar
+        'AIzaSyA6QkvTck3TKxytH3r6B-3AH0AEIfnIw-w', # Anvar
+        'AIzaSyB2S6OeAN4PLI-IlbDWMNIokiNKrox48-o' # Husan
     ]
 
     # 2️⃣ Joriy key indeksini olish
@@ -301,6 +301,14 @@ def ask_llm(req: QueryRequest, credentials: HTTPBasicCredentials = Depends(secur
 
     # 3️⃣ Kalitni tanlash va modelni yangilash (GEMINI uchun global sozlash)
     api_key = api_keys[number % len(api_keys)]
+    print(api_key)
+
+    # 5️⃣ So‘rov sonini oshirish
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("UPDATE javoblar SET number_of_answer = number_of_answer + 1 WHERE id = 1;")
+            conn.commit()
+
     genai.configure(api_key=api_key)
     global gemini
     gemini = genai.GenerativeModel("models/gemini-2.5-flash")
@@ -331,16 +339,13 @@ def ask_llm(req: QueryRequest, credentials: HTTPBasicCredentials = Depends(secur
         else:
             raise e
 
-    # 5️⃣ So‘rov sonini oshirish
-    with get_connection() as conn:
-        with conn.cursor() as cur:
-            cur.execute("UPDATE javoblar SET number_of_answer = number_of_answer + 1 WHERE id = 1;")
-            conn.commit()
+
 
     # 6️⃣ Natijani qaytarish
     return {
         "query": extract_sql(result.get("sql_query")) if result.get("sql_query") else None,
         "answer": result.get("final_answer"),
-        "query_result":result.get("sql_result")
+        "query_result":result.get("sql_result"),
+        "api_key":api_key
     }
 
