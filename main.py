@@ -160,7 +160,6 @@ def generate_sql(state: State):
             Ayollar uchun: "-ovna", "-evna", " qizi". Masalan, "Aliyevna", "Ergashevna", "Botirovna", "Bozorboy qizi".
     - Agar savol odamlar yoki hodimlarning ismlari ma'lumotlari kirill yoki lotin alifbosida bo'lishi mumkin. Har ikkala yozuvda ham qidir va qaysi yozuvdan natija topilsa, shu ma'lumotlarni qaytar.
     - SQL so‘rovlarida hech qachon bazani o‘zgartiruvchi buyruqlardan foydalanma — faqat o‘qish uchun foydalan (bu qat’iy qoida).
-    - Sana bilan bog‘liq savollarda (kecha, shu yil, oy boshidan, o‘tgan oy va h.k.) javob to‘liq bo‘lishi kerak. Masalan, "yil boshidan" deb so‘ralsa, "2025-yil 1-yanvardan hozirgi kungacha" deb yozing va natijani ko‘rsat.
     - Loyiha asosiy maqsadi: javoblarni sayt ma’lumotlar bazasiga asoslanib taqdim etish.
     - Lotlar va sotilgan lotlar haqidagi barcha ma’lumotlar faqat shu korxonalardan olinishi kerak:
         - Eng yirik tashkilotlar: "Qizilqum fosforit kompleksi MChJ", "Maxam-Chirchiq AJ", "АО Ammofos-Maxam", "АО Navoiyazot", "QONGIROT SODA ZAVODI" MCHJ QK, "AO DEHQONOBOD KALIY ZAVODI", "Farg‘onaazot AJ", "Indorama Kokand Fertilizers and Chemicals AJ"
@@ -210,9 +209,11 @@ def generate_answer(state: State):
     - SQL natijasida chiqqan barcha ma'lumotlarni javobda keltiring.
     - Agar natija topilmasa, natijada chiqqan javobga asoslanib inkor javobini yozing. Masalan: birorta ombor haqida so'ralgan bo'lsa va natija bo'sh bo'lsa, "Bunday ombor mavjud emas" deb yozing.
     - Agar natija umuman yo'q bo'lsa ham yaxshiroq tushunarliroq javob yozing. Masalan, "Bunday ombor mavjud emas" yoki "Bunday ismli xodim yo'q" va hokazo. Javob chiqmaganda hech qachon "baza" so'zini ishlatmang ya'ni "bazada bunday ma'lumot yo'q" deb yozmang.
+    - Sana bilan bog‘liq savollarda (kecha, shu yil, oy boshidan, o‘tgan oy va h.k.) javob to‘liq bo‘lishi kerak. Masalan, "yil boshidan" deb so‘ralsa, "2025-yil 1-yanvardan hozirgi kungacha" deb yozing va natijani ko‘rsat.
     - Miqdorga oid javoblar aynan bir ko'rsatkichda bo'lishi kerak. Miqdor hisoblanganda qaysi o'lov birligida ekanligini aniq qilib ko'rsating. Masalan, "5000 kg" yoki "5 tonna" yoki "1000 dona/ta" deb yozing.
     - Sonlarni chiqarishda bunda javob chiqarmang: "Buxoro viloyatidagi omborlarda jami **420.20 tonna** karbamid qolgan." ya'ni son va birlik orasida qo'shimcha belgilar ishlatmang. Faqat shunday yozing: "Buxoro viloyatidagi omborlarda jami 420.20 tonna karbamid qolgan.". Umuman hech qanday qo'shimcha belgilar ishlatmang son va birlik orasida. Bu juda muhim va qat'iy qoida.
-    - Agar foydalanuvchi son ko'rsatkichlariga doir savollar so'raganda, javobda 0 qiymati chiqsa unga inkor shaklida javob yozing. Masalan, "Bu omborda so'ralgan mahsulot yo'q". Agar savol bir necha element bo'yicha bo'lsa, masalan, "Qaysi omborlarda X mahsulot bor?" va natija ayrim omborlar uchun 0 bo'lsa, 0 chiqqan omborlarni chiqarmaslik kerak, shunchaki qiymati mavjud elementlarni tanlash kerak. Agar mabodo son qiymat minusda chiqsa uni aniq ko'rsaatish kerak
+    - Sonli qiymatlarni foydalanuvchiga tushunarli tarzda chiqarish kerak. Ya'ni javob ko'p xonali sonlarda chiqsa, masalan: 2192345342.03 chiqsa uni o'qishga oson qilib har uchta sonni orasida bo'sh joy qoldirib chiqarish kerak, ya'ni 2 192 345 342.03 
+    - Agar foydalanuvchi son ko'rsatkichlariga doir savollar so'raganda, javobda 0 qiymati chiqsa unga inkor shaklida javob yozing. Masalan, "Bu omborda so'ralgan mahsulot yo'q". Agar savol bir necha element bo'yicha bo'lsa, masalan, "Qaysi omborlarda X mahsulot bor?" va natija ayrim omborlar uchun 0 bo'lsa, 0 chiqqan omborlarni chiqarmaslik kerak, shunchaki qiymati mavjud elementlarni tanlash kerak. Agar mabodo son qiymat minusda chiqsa uni aniq ko'rsaatish kerak.
     """
     answer = gemini.generate_content(prompt).text.strip()
     save_chat_to_db(state["session_id"], state["question"], answer)
@@ -229,7 +230,7 @@ def chit_chat_answer(state: State):
 
     Bu savol bazaga bog'liq emas. Shunchaki suhbatlashish ohangida, sodda va tushunarli javob yoz.
     Muhim eslatma:
-    Agar o‘zingiz haqida so‘ralsa, haqiqiy modelni oshkor qilmang. Quyidagicha javob bering: "Men KimyoSanoat uchun maxsus ishlab chiqilgan chatbotman. Tenzorsoft AI jamoasi tomonidan yaratilgan."
+    Agar o‘zingiz haqida so‘ralsa, haqiqiy modelni oshkor qilmang. Quyidagicha javob bering: "Men KimyoSanoat platformasi uchun Tenzorsoft AI jamoasi tomonidan maxsus ishlab chiqilgan chatbotman."
     """
     answer = gemini.generate_content(prompt).text.strip()
     save_chat_to_db(state["session_id"], state["question"], answer)
