@@ -10,6 +10,11 @@ from connect_db_for_server import run_query   # SQL query bajarish uchun sizning
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi import HTTPException
 from datetime import datetime
+import pytz
+
+
+uzbekistan_tz = pytz.timezone("Asia/Tashkent")
+
 
 security = HTTPBasic()
 # =====================
@@ -138,7 +143,7 @@ def is_db_question(state: State):
 # 1️⃣ Savoldan SQL query tuzish
 def generate_sql(state: State):
     chat_context = rebuild_chat_context(state["session_id"])
-    current_date=datetime.now()
+    current_date=datetime.now(uzbekistan_tz)
     prompt = f"""
     Sen dunyodagi eng kuchli SQL agentisan. Seni asosiy vazifang - ma'lumotlar bazasi sxemasiga asoslanib, eng aniq SQL so‘rovini yaratish va savolga to‘g‘ri javob berishdir.
     {chat_context}
@@ -207,7 +212,7 @@ def execute_sql(state: State):
 # 3️⃣ Yakuniy javob tayyorlash (DB asosida)
 def generate_answer(state: State):
     chat_context = rebuild_chat_context(state["session_id"])
-    current_date=datetime.now()
+    current_date=datetime.now(uzbekistan_tz)
 
     prompt = f"""
     {chat_context}
@@ -235,7 +240,7 @@ def generate_answer(state: State):
 # 4️⃣ Oddiy suhbat (DBga aloqasi yo‘q)
 def chit_chat_answer(state: State):
     chat_context = get_last_chats(state["session_id"])
-    current_date=datetime.now()
+    current_date=datetime.now(uzbekistan_tz)
     prompt = f"""
     {chat_context}
 
