@@ -1080,8 +1080,8 @@ create table public.organization_komunal_values -- Ushbu jadvalda tashkilotlarni
     datetime_created  timestamp(6)   not null, -- ma'lumot yaratilgan sana va vaqt
     datetime_updated  timestamp(6)   not null, -- ma'lumot yangilangan sana va vaqt
     amount            numeric(38, 2) not null, -- energiya miqdori
-    date              date           not null, -- enrgiya sarfi qayd etilgan vaqt
-    date_types        varchar(255)   not null -- energiya sarflangan davr turi (YEARLY: yillik, MONTHLY: oylik, DAILY: kunlik)
+    date              date           not null, -- enrgiya date_types bo'yicha ma'lumot kiritilgan sana
+    date_types        varchar(255)   not null -- energiya sarflangan davr turi (YEARLY: yillik, MONTHLY: oylik, DAILY: kunlik) energiya sarfini hisoblash uchun: yillik energiya sarfi uchun barcha YEARLY qiymatlar yig'indis hisoblanadi, oylik energiya sarfi uchun MONTHLY qiymatlar yigi'indisi hisoblanadi, kunlik energiya sarfini chiqarish uchun esa DAILY qiymatlar yig'indisi hisoblanadi. 
         constraint organization_komunal_values_date_types_check
             check ((date_types)::text = ANY
                    (ARRAY [('YEARLY'::character varying)::text, ('MONTHLY'::character varying)::text, ('DAILY'::character varying)::text])),
