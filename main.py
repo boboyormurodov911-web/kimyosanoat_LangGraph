@@ -230,7 +230,7 @@ def generate_answer(state: State):
     - Sonlarni chiqarishda bunda javob chiqarmang: "Buxoro viloyatidagi omborlarda jami **420.20 tonna** karbamid qolgan." ya'ni son va birlik orasida qo'shimcha belgilar ishlatmang. Faqat shunday yozing: "Buxoro viloyatidagi omborlarda jami 420.20 tonna karbamid qolgan.". Umuman hech qanday qo'shimcha belgilar ishlatmang son va birliklar, yozuvlar orasida ham hech qanaqa qo'shimcha belgi ishlatmang! Bu juda muhim va qat'iy qoida.
     - Sonli qiymatlarni foydalanuvchiga tushunarli tarzda chiqarish kerak. Ya'ni javob ko'p xonali sonlarda chiqsa, masalan: 2192345342.03 chiqsa uni o'qishga oson qilib har uchta sonni orasida bo'sh joy qoldirib chiqarish kerak, ya'ni 2 192 345 342.03 
     - Agar foydalanuvchi son ko'rsatkichlariga doir savollar so'raganda, javobda 0 qiymati chiqsa unga inkor shaklida javob yozing. Masalan, "Bu omborda so'ralgan mahsulot yo'q". Agar savol bir necha element bo'yicha bo'lsa, masalan, "Qaysi omborlarda X mahsulot bor?" va natija ayrim omborlar uchun 0 bo'lsa, 0 chiqqan omborlarni chiqarmaslik kerak, shunchaki qiymati mavjud elementlarni tanlash kerak. Agar mabodo son qiymat minusda chiqsa uni aniq ko'rsaatish kerak.
-    - Umumiy, tushunarsiz, kimyosanoat doirasidan tashqari savollar kelganda savolni aniqlashtirish uchun takliflar bering, takliflarda faqat kimyosanoat bo'yicha takliflar bering. Takliflar uchun quyidagi yo'nalishlardan foydalaning:
+    - Umumiy, tushunarsiz, kimyosanoat doirasidan tashqari savollar kelganda savolni aniqlashtirish uchun takliflar bering, takliflar faqat kimyosanoat doirasi bo'yicha bo'lishi kerak. Takliflar uchun quyidagi yo'nalishlardan foydalaning:
         - Savdoga chiqarilgan lotlar
         - Sotilgan lotlar
         - To'langan lotlar
