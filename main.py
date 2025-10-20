@@ -9,6 +9,7 @@ from psycopg2.extras import RealDictCursor
 from connect_db_for_server import run_query   # SQL query bajarish uchun sizning mavjud funksiya
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi import HTTPException
+from datetime import datetime
 
 security = HTTPBasic()
 # =====================
@@ -205,12 +206,14 @@ def execute_sql(state: State):
 # 3️⃣ Yakuniy javob tayyorlash (DB asosida)
 def generate_answer(state: State):
     chat_context = rebuild_chat_context(state["session_id"])
+    current_date=datetime.now()
     prompt = f"""
     {chat_context}
 
     Foydalanuvchi savoli: {state['question']}
     SQL natijasi: {state['sql_result']}
-
+    current date: {current_date}
+    
     Aniq va foydalanuvchiga qulay qilib javob yozing.
     Qat'iy qoidalar:
     - SQL natijasida chiqqan barcha ma'lumotlarni javobda keltiring.
