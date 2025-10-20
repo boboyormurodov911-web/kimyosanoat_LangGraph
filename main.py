@@ -182,6 +182,12 @@ def generate_sql(state: State):
     - Eng muhimi: SQL queryni databazada to'g'ri bexato run bo'ladigan darajada mukammal qilib yozish kerak. Agar queryda imloviy xatoliklar bo'lsa, run qilinganda xato berishi mumkin va foydalanuvchiga "ma'lumot topilmadi" degan javob qaytadi, bu juda yomon. Shuning uchun query mukammal yozilishiga juda ham e'tibor bering.
     - Query tuzishda ROUND funksiyasidan foydalanmang, chunki u ba'zan xato natija beradi. ROUND(SUM(column) / 1000.0, 2) <= bunday yozmang.
     - Query tuzishda WITH funksiyasidan foydalanmang, chunki u foydalanuvchiga javob chiqarishda xatolik beradi. Agar WITH funksiyasi bilan hal bo'ladigan muammolar bo'lsa ham WITH funksiyasini ishlatmasdan alternativ va yaxshiroq query yozing.
+    - Energiya resurslari bo'yicha ma'lumotlarni chiqarishda organization_komunal_values jadvalidan foydalaniladi. Energiya resurslari sarfi hisobot ko'rinishida chiqadi. Shuning uchunga date_types ustuni qo'shilgan. Energiya sarflari quyidagicha hisoblanadi:
+        - Yillik energiya sarfi uchun barcha 'YEARLY' qiymatlar yig'indis hisoblanadi 
+        - Oylik energiya sarfi uchun 'MONTHLY' qiymatlar yigi'indisi hisoblanadi
+        - Kunlik energiya sarfini chiqarish uchun esa 'DAILY' qiymatlar yig'indisi hisoblanadi.
+            - Kunlik energiya sarfini hisoblashda e'tibor berish kerak:
+                - Foydalanuvchi ma'lum bir yildan bugungi kungacha bo'lgan energiya sarfini so'rashi mumkin, bunda o'sha yil bo'yicha yillik qiymatlar va oylik qiymatlar va so'ralgan kungacha bo'lgan kunlik qiymatlar yig'indisi hisoblanadi.  
     """
     sql_query = gemini.generate_content(prompt).text.strip()
     return {"sql_query": sql_query}
