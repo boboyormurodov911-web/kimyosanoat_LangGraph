@@ -1072,6 +1072,30 @@ create table public.organization  -- Ushbu jadvalda tashkilotlar haqida ma'lumot
     org_address              varchar(255) -- tashkilot manzili
 );
 
+create table public.organization_komunal_values -- Ushbu jadvalda tashkilotlarning energiya resurslari sarfi bo'yicha ma'lumotlar saqlanadi
+(
+    id                bigint         not null -- ID raqam (primary key)
+        primary key,
+    create_by         bigint, -- yaratuvchi (foydalanuvchi) id raqami
+    datetime_created  timestamp(6)   not null, -- ma'lumot yaratilgan sana va vaqt
+    datetime_updated  timestamp(6)   not null, -- ma'lumot yangilangan sana va vaqt
+    amount            numeric(38, 2) not null, -- energiya miqdori
+    date              date           not null, -- enrgiya sarfi qayd etilgan vaqt
+    date_types        varchar(255)   not null -- energiya sarflangan davr turi (YEARLY: yillik, MONTHLY: oylik, DAILY: kunlik)
+        constraint organization_komunal_values_date_types_check
+            check ((date_types)::text = ANY
+                   (ARRAY [('YEARLY'::character varying)::text, ('MONTHLY'::character varying)::text, ('DAILY'::character varying)::text])),
+    measurement_types varchar(255)   not null -- o'lchov birligi turlari (m3: metr kub, kwt: kilovatt)
+        constraint organization_komunal_values_measurement_types_check
+            check ((measurement_types)::text = ANY
+                   (ARRAY [('m3'::character varying)::text, ('kwt'::character varying)::text])),
+    organization_id   bigint         not null, -- tashkilot id raqami (1: Navoiyazot, 2: Maxam-Chirchiq, 3: Ammofos-Maxam, 4: Dehqonobod kaliy zavodi, 32: YAKKATUT KIMYO)
+    type              varchar(255)   not null -- sarflangan energiya turi (GAS: gaz, SVET: elektr, SUV: suv)
+        constraint organization_komunal_values_type_check
+            check ((type)::text = ANY
+                   (ARRAY [('GAS'::character varying)::text, ('SVET'::character varying)::text, ('SUV'::character varying)::text]))
+);
+
 create table public.application -- Ushbu jadvalda arizalar haqida ma'lumotlar saqlanadi
 (
     id                 bigint       not null -- ID raqam (primary key)
