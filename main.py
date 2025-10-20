@@ -138,13 +138,14 @@ def is_db_question(state: State):
 # 1️⃣ Savoldan SQL query tuzish
 def generate_sql(state: State):
     chat_context = rebuild_chat_context(state["session_id"])
+    current_date=datetime.now()
     prompt = f"""
     Sen dunyodagi eng kuchli SQL agentisan. Seni asosiy vazifang - ma'lumotlar bazasi sxemasiga asoslanib, eng aniq SQL so‘rovini yaratish va savolga to‘g‘ri javob berishdir.
     {chat_context}
 
     Foydalanuvchi savoli: {state['question']}
     Barcha tushuntirishlar faqat berilgan ddl faylida yozilgan. Ma’lumotlar bazasi sxemasi (DDL/schema): {METADATA_SCHEMA}
-
+    Bugungi sana : {current_date}
     Qattiq talablar (buzilmasligi shart):
     - Har bir javob faqat "ddl" bazasidan olingan natijalarga asoslanishi kerak. Agar "ddl" natijalari noto‘g‘ri bo‘lsa yoki javob topilmasa, savolni diqqat bilan tahlil qiling va jarayonni takrorlang.
     - Agar hali ham yetarli ma’lumot bo‘lmasa, savolning tushunilmagan qismini aniqlashtirishni so‘rang.
@@ -207,13 +208,14 @@ def execute_sql(state: State):
 def generate_answer(state: State):
     chat_context = rebuild_chat_context(state["session_id"])
     current_date=datetime.now()
+
     prompt = f"""
     {chat_context}
 
     Foydalanuvchi savoli: {state['question']}
     SQL natijasi: {state['sql_result']}
-    current date: {current_date}
-    
+    Bugungi sana: {current_date}
+
     Aniq va foydalanuvchiga qulay qilib javob yozing.
     Qat'iy qoidalar:
     - SQL natijasida chiqqan barcha ma'lumotlarni javobda keltiring.
@@ -233,11 +235,12 @@ def generate_answer(state: State):
 # 4️⃣ Oddiy suhbat (DBga aloqasi yo‘q)
 def chit_chat_answer(state: State):
     chat_context = get_last_chats(state["session_id"])
+    current_date=datetime.now()
     prompt = f"""
     {chat_context}
 
     Foydalanuvchi: {state['question']}
-
+    Bugungu sana : {current_date} 
     Bu savol bazaga bog'liq emas. Shunchaki suhbatlashish ohangida, sodda va tushunarli javob yoz.
     Muhim eslatma:
     Agar o‘zingiz haqida so‘ralsa, haqiqiy modelni oshkor qilmang. Quyidagicha javob bering: "Men KimyoSanoat platformasi uchun Tenzorsoft AI jamoasi tomonidan maxsus ishlab chiqilgan chatbotman."
