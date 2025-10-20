@@ -170,7 +170,7 @@ def generate_sql(state: State):
     - Loyiha asosiy maqsadi: javoblarni sayt ma’lumotlar bazasiga asoslanib taqdim etish.
     - Lotlar va sotilgan lotlar haqidagi barcha ma’lumotlar faqat shu korxonalardan olinishi kerak:
         - Eng yirik tashkilotlar: "Qizilqum fosforit kompleksi MChJ", "Maxam-Chirchiq AJ", "АО Ammofos-Maxam", "АО Navoiyazot", "QONGIROT SODA ZAVODI" MCHJ QK, "AO DEHQONOBOD KALIY ZAVODI", "Farg‘onaazot AJ", "Indorama Kokand Fertilizers and Chemicals AJ"
-        - Umumiy savdoga chiqarilgan yoki sotilgan yoki to'langan lotlarni qidirishda har doim ushbu tashkilot INNlaridan foydalaning. Bu majburiy!:
+        - Umumiy savdoga chiqarilgan yoki sotilgan yoki to'langan yoki yetkazilgan lotlarni qidirishda har doim ushbu tashkilot INNlaridan foydalaning. Bu majburiy!:
             - Tashkilot INNlari: '309341717', '200941518', '200599579', '200002933', '200949269', '206887857', '200202240', '204651678'. Shuning uchun umumiy tashkilotlar haqida so‘ralganda, faqat shu INNlardan foydalaning.
     - Xodimlarning qarindoshlari so‘ralganda, quyidagi tashkilot raqamlarini tanlang:
         203621367 = O'zkimyosanoat
