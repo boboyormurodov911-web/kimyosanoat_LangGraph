@@ -1705,7 +1705,7 @@ create table public.sold_lot -- ushbu jadvalda sotilgan lotlar haqida ma'lumotla
     datetime_updated           timestamp(6) not null, -- BU USTUNDAN MA'LUMOT OLINMASIN! (sana uchun transaction_date yoki transaction_date_as_date ustunidan ma'lumot olinadi)
     account                    varchar(255), -- hisob raqami
     bank_name                  varchar(255), -- bank nomi
-    bargain_status             varchar(255), -- savdo holati (yillik yoki oylik sotilgan lotlar hajmi yoki narxi so'ralganda -> ('Разблокирован','Оплата','Исполнено'), to'langan lotlar hajmi yoki narxi so'ralganda -> ('Оплата','Исполнено'), yetkazib berilgan lotlar hajmi yoki narxi so'ralganda -> ('Исполнено') qiymatlarini tanlash kerak)
+    bargain_status             varchar(255), -- savdo holati (yillik yoki oylik sotilgan lotlar hajmi yoki narxi so'ralganda -> ('Разблокирован','Оплата','Исполнено'), to'langan lotlar hajmi yoki narxi so'ralganda -> ('Оплата','Исполнено'), yetkazib berilgan(yetkazilgan) lotlar hajmi yoki narxi so'ralganda -> ('Исполнено') qiymatlarini tanlash kerak)
     buyer_address              varchar(255), -- xaridor manzili
     buyer_inn                  varchar(255), -- xaridor INN raqami
     buyer_name                 varchar(255), -- xaridor nomi
@@ -1734,7 +1734,7 @@ create table public.sold_lot -- ushbu jadvalda sotilgan lotlar haqida ma'lumotla
     start_price                double precision, -- boshlang'ich narx
     transaction_date           timestamp(6), -- tranzaksiya sanasi va vaqti (yillik yoki oylik yetkazilgan yoki to'langan lotlar soni yoki narxi so'ralganda ushbu ustundan foydalanish kerak; korxonalar bo'yicha sotilgan lotlar narxi so'ralganda ham ushbu ustundan olish kerak)
     transaction_number         varchar(255), -- tranzaksiya raqami
-    transaction_sum            double precision, -- sotilgan lotlar umumiy narxi (yillik yoki oylik sotilgan lotlarning narxi so'ralganda joriy ustundan foydalanish kerak)
+    transaction_sum            double precision, -- savdo amalga oshirilgan lotlar umumiy narxi (yillik yoki oylik 'Sotilgan' yoki 'To'langan' yoki 'Yetkazilgan' lotlarning narxi so'ralganda joriy ustundan foydalanish kerak)
     warehouse                  varchar(255), -- ombor
     product_group_name         varchar(255), -- mahsulot guruhi nomi
     transaction_date_as_date   date, -- tranzaksiya sanasi (ma'lumot turi 'date' ko'rinishida; asosiy sanalar bo'yicha ustun)
