@@ -193,7 +193,8 @@ def generate_sql(state: State):
         - Oylik energiya sarfi uchun 'MONTHLY' qiymatlar yigi'indisi hisoblanadi
         - Kunlik energiya sarfini chiqarish uchun esa 'DAILY' qiymatlar yig'indisi hisoblanadi.
             - Kunlik energiya sarfini hisoblashda e'tibor berish kerak:
-                - Foydalanuvchi ma'lum bir yildan bugungi kungacha bo'lgan energiya sarfini so'rashi mumkin, bunda o'sha yil bo'yicha yillik qiymatlar va oylik qiymatlar va so'ralgan kungacha bo'lgan kunlik qiymatlar yig'indisi hisoblanadi.  
+                - Foydalanuvchi ma'lum bir yildan bugungi kungacha bo'lgan energiya sarfini so'rashi mumkin, bunda o'sha yil bo'yicha yillik qiymatlar va oylik qiymatlar va so'ralgan kungacha bo'lgan kunlik qiymatlar yig'indisi hisoblanadi.
+    - Chet el davlatlari bo'yicha savol bo'lganda har doim country_code jadvaliga kirib alpha3 ustunidan davlatlarning 3 harfli kodini tanlab ajratib olish kerak.
     """
     sql_query = gemini.generate_content(prompt).text.strip()
     return {"sql_query": sql_query}
