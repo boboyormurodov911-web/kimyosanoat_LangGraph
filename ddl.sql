@@ -2215,21 +2215,21 @@ create table public.warehouse_bijra_contract -- Ushbu jadvalda omborlar va bijra
     primary key (warehouse_id, contract_number)
 );
 
-create table public.warehouse_stock_income_output -- Ushbu jadvalda omborlardagi mahsulotlarning birjadagi kirim-chiqim ma'lumotlari saqlanadi. Umumiy ma'lumotlar olish uchun transfer jadvalidan foydalanish kerak.
+create table public.warehouse_stock_income_output -- Ushbu jadvalda ishlab chiqarish omborlari qoldiqlari haqidagi ma'lumotlari saqlanadi.
 (
     id               bigint       not null -- ID raqam (primary key)
         primary key,
     datetime_created timestamp(6) not null, -- ma'lumot yaratilgan sana va vaqt, bu ustunni umumiy sana sifatida ishlatish kerak
     datetime_updated timestamp(6) not null, -- ma'lumot yangilangan sana va vaqt
     account          varchar(255), -- hisob raqami
-    closing_stock    double precision, -- ombordagi yopilish zaxirasi
+    closing_stock    double precision, -- davr oxiridagi mahsulot miqdori(zaxirasi)
     datetime_deleted timestamp(6), -- ma'lumot o'chirilgan sana va vaqt
     deleted          boolean, -- o'chirilganligi (true/false)
     inn              varchar(255), -- INN raqami
-    mxik_code        varchar(255), -- MXIK kodi
+    mxik_code        varchar(255), -- mahsulotning yagona MXIK kodi
     opening_stock    integer, -- ombordagi ochilish zaxirasi
-    organization_id  varchar(255), -- tashkilot ID raqami
-    period           timestamp(6), -- kirim-chiqim davri
+    organization_id  varchar(255), -- tegishli tashkilot ID raqami, organization jadvalining id ustuni bilan bog'langan (bu ustun turi varchar yani text kiritiladi. organization jadvali id ustuni esa bigint yani son kiritiladi. JOIN qilinayotganda type casting qilib bir xil ma'ulmot turiga keltirib olish kerak)
+    period           timestamp(6), -- hisobot davri
     product_id       varchar(255), -- mahsulot ID raqami
     product_name     varchar(255), -- mahsulot nomi
     warehouse_id     varchar(255), -- ombor ID raqami
