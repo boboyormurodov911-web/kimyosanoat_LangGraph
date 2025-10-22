@@ -2215,7 +2215,7 @@ create table public.warehouse_bijra_contract -- Ushbu jadvalda omborlar va bijra
     primary key (warehouse_id, contract_number)
 );
 
-create table public.warehouse_stock_income_output -- Ushbu jadvalda tashkilotlar tomonidan ishlab chiqarilgan mahsulotlar qoldiqlari haqidagi ma'lumotlari saqlanadi.
+create table public.warehouse_stock_income_output -- Ushbu jadvalda tashkilotlar tomonidan ishlab chiqarilgan va omborlarda saqlanayotgan mahsulotlar miqdori haqidagi ma'lumotlari saqlanadi.
 (
     id               bigint       not null -- ID raqam (primary key)
         primary key,
