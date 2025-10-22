@@ -1,3 +1,4 @@
+import concurrent
 import re
 import os
 import google.generativeai as genai
@@ -318,72 +319,84 @@ class QueryRequest(BaseModel):
 
 @app.post("/ask")
 def ask_llm(req: QueryRequest, credentials: HTTPBasicCredentials = Depends(security)):
+    # 1️⃣ Auth tekshiruvi
     if not (credentials.username == "ai-admin" and credentials.password == "ai-admin123"):
         raise HTTPException(status_code=401, detail="Unauthorized")
 
-    # 1️⃣ API kalitlar ro'yxati
+    # 2️⃣ API kalitlar ro‘yxati
     api_keys = [
-        'AIzaSyCthmBOzi8PHcQg0KhdIwAqv21SQ0DQX0s', # Ruslan
-        'AIzaSyB5DzIJNZIOGNFw-ytECJHtuzXZ3_hEIfs', # Hasan
-        'AIzaSyBar5IjWE1Czyc4afj4rBQZ6xCYpHmyHq0', # Abdulaziz
-        'AIzaSyAXw9KQSYX-Ue98JcfEt_kajK5qb1Ggfqg', # Abbos
-        'AIzaSyA6QkvTck3TKxytH3r6B-3AH0AEIfnIw-w', # Anvar
-        'AIzaSyB2S6OeAN4PLI-IlbDWMNIokiNKrox48-o' # Husan
+        'AIzaSyCthmBOzi8PHcQg0KhdIwAqv21SQ0DQX0s',  # Ruslan
+        'AIzaSyB5DzIJNZIOGNFw-ytECJHtuzXZ3_hEIfs',  # Hasan
+        'AIzaSyBar5IjWE1Czyc4afj4rBQZ6xCYpHmyHq0',  # Abdulaziz
+        'AIzaSyAXw9KQSYX-Ue98JcfEt_kajK5qb1Ggfqg',  # Abbos
+        'AIzaSyA6QkvTck3TKxytH3r6B-3AH0AEIfnIw-w',  # Anvar
+        'AIzaSyB2S6OeAN4PLI-IlbDWMNIokiNKrox48-o'   # Husan
     ]
 
-    # 2️⃣ Joriy key indeksini olish
+    # 3️⃣ Joriy kalit indeksini olish
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("SELECT number_of_answer FROM javoblar WHERE id = 1")
             number = cur.fetchone()[0]
 
-    # 3️⃣ Kalitni tanlash va modelni yangilash (GEMINI uchun global sozlash)
     api_key = api_keys[number % len(api_keys)]
-    print(api_key)
+    print(f"[INFO] API Key tanlandi: {api_key}")
 
-    # 5️⃣ So‘rov sonini oshirish
+    # 4️⃣ So‘rovlar sonini oshirish
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute("UPDATE javoblar SET number_of_answer = number_of_answer + 1 WHERE id = 1;")
             conn.commit()
 
+    # 5️⃣ Gemini sozlash
     genai.configure(api_key=api_key)
     global gemini
     gemini = genai.GenerativeModel("models/gemini-2.5-flash")
 
-    # 4️⃣ Faqat endi LangGraph ishlasin (to‘g‘ri API bilan)
+    # 6️⃣ LangGraph orqali so‘rov yuborish (⏱ Timeout bilan)
     try:
-        result = graph.invoke({
-            "session_id": req.session_id,
-            "question": req.question
-        })
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            future = executor.submit(graph.invoke, {
+                "session_id": req.session_id,
+                "question": req.question
+            })
+            # ⏱ 30 soniya ichida javob kutiladi
+            result = future.result(timeout=30)
+
+    except concurrent.futures.TimeoutError:
+        raise HTTPException(status_code=504, detail="AI javob berish uchun vaqt tugadi (timeout)")
+
     except Exception as e:
-        # 429 bo‘lsa boshqa kalitga o‘tish mexanizmi
+        # 429 yoki kvota tugagan holat
         if "ResourceExhausted" in str(e):
+            print("[WARN] API kaliti tugadi, keyingisiga o‘tilmoqda...")
+            result = None
             for alt_key in api_keys:
                 try:
                     genai.configure(api_key=alt_key)
                     gemini = genai.GenerativeModel("models/gemini-2.5-flash")
-                    result = graph.invoke({
-                        "session_id": req.session_id,
-                        "question": req.question
-                    })
+                    with concurrent.futures.ThreadPoolExecutor() as executor:
+                        future = executor.submit(graph.invoke, {
+                            "session_id": req.session_id,
+                            "question": req.question
+                        })
+                        result = future.result(timeout=30)
+                    print(f"[INFO] Zaxira API Key ishladi: {alt_key}")
                     break
                 except Exception as e2:
                     if "ResourceExhausted" in str(e2):
                         continue
                     else:
                         raise e2
+            if result is None:
+                raise HTTPException(status_code=429, detail="Barcha API kalitlar limiti tugagan")
         else:
             raise e
 
-
-
-    # 6️⃣ Natijani qaytarish
+    # 7️⃣ Natijani qaytarish
     return {
         "query": extract_sql(result.get("sql_query")) if result.get("sql_query") else None,
         "answer": result.get("final_answer"),
-        "query_result":result.get("sql_result"),
-        "api_key":api_key
+        "query_result": result.get("sql_result"),
+        "api_key": api_key
     }
-
