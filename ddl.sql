@@ -2224,7 +2224,7 @@ create table public.warehouse_stock_income_output -- Ushbu jadvalda ishlab chiqa
     account          varchar(255), -- hisob raqami
     closing_stock    double precision, -- davr oxiridagi mahsulot miqdori(zaxirasi)
     datetime_deleted timestamp(6), -- ma'lumot o'chirilgan sana va vaqt
-    deleted          boolean, -- o'chirilganligi (true/false)
+    deleted          boolean, -- yozuv(ma'lumot) o'chirilganligi (true/false). mavjud ma'lumotlarni tekshirish uchun ushbu ustun bilan albatta tekshirish kerak (deleted = false)
     inn              varchar(255), -- INN raqami
     mxik_code        varchar(255), -- mahsulotning yagona MXIK kodi
     opening_stock    integer, -- ombordagi ochilish zaxirasi
